@@ -13,23 +13,24 @@ from property.permissions import OwnerPermission
 
 
 class PropertyView(APIView):
-
     def get(self, request, *args, **kwargs):
         property = Property.objects.all()
-        property_serializer = PropertySerializer(property, many=True, context={'request': request})
-        content = { "user":request.user.username,
-                    "property":property_serializer.data
-                }
+        property_serializer = PropertySerializer(
+            property, many=True, context={"request": request}
+        )
+        content = {"user": request.user.username, "property": property_serializer.data}
         return Response(content)
 
     def post(self, request, *args, **kwargs):
         data = request.data
-        data['owner'] = reverse('property-detail', kwargs={'pk':request.data['owner']}, request=request)
+        data["owner"] = reverse(
+            "property-detail", kwargs={"pk": request.data["owner"]}, request=request
+        )
         property_serializer = PropertySerializer(data=data)
         if property_serializer.is_valid():
-            print('------pass')
+            print("------pass")
         else:
-            content = {"errors":property_serializer.errors}
+            content = {"errors": property_serializer.errors}
             return Response(content)
 
 

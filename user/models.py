@@ -61,4 +61,3 @@ class UserAddress(BaseAddress):
 
     def __str__(self):
         return self.street_address
-

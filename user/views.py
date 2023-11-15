@@ -7,6 +7,5 @@ from property.serializers import PropertySerializer
 
 
 class ProfileView(APIView):
-
     def get(self, request, *args, **kwargs):
-        return Response('test')
+        return Response("test")

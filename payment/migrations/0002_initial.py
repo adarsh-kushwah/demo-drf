@@ -5,18 +5,19 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('payment', '0001_initial'),
-        ('property', '0001_initial'),
+        ("payment", "0001_initial"),
+        ("property", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='bill',
-            name='booking',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='property.booking'),
+            model_name="bill",
+            name="booking",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="property.booking"
+            ),
         ),
     ]

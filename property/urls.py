@@ -8,6 +8,6 @@ from property.views import PropertyView, PropertyDetailView
 
 
 urlpatterns = [
-    path('property/', PropertyView.as_view(), name="property-list"),
-    path('property/<int:pk>/',PropertyDetailView.as_view(), name="property-detail"),
+    path("property/", PropertyView.as_view(), name="property-list"),
+    path("property/<int:pk>/", PropertyDetailView.as_view(), name="property-detail"),
 ]
