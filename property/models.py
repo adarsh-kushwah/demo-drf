@@ -12,7 +12,7 @@ class Property(models.Model):
         ("flat_3bkh", "Flat-3bhk"),
     )
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20, null=True)
+    name = models.CharField(max_length=20)
     property_type = models.CharField(
         max_length=20, choices=PROPERTY_TYPES_CHOICES, default="house"
     )
@@ -26,6 +26,12 @@ class Property(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} {self.property_type}"
+
+    class Meta:
+        unique_together = (
+            "owner",
+            "name",
+        )
 
 
 class PropertyAddress(BaseAddress):

@@ -1,9 +1,20 @@
-from django.urls import path
+from django.urls import path, include
 from user.views import ProfileView
-from rest_framework.authtoken import views
 
+# from rest_framework.authtoken import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from rest_framework import routers
+
+router = routers.SimpleRouter()
+router.register(r"profile", ProfileView)
 
 urlpatterns = [
-    path("login/", views.obtain_auth_token, name="login"),
-    path("profile/<int:pk>/", ProfileView.as_view(), name="userprofile-detail"),
+    # path("signup/", UserProfileView.as_view(), name="user_profile"),
+    # path("login/", views.obtain_auth_token, name="login"),
+    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("", include(router.urls)),
 ]

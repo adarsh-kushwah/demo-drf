@@ -9,5 +9,7 @@ class OwnerPermission(permissions.BasePermission):
     message = "Permission denied"
 
     def has_permission(self, request, view):
+        if request.user.is_superuser:
+            return True
         property = Property.objects.select_related("owner").get(pk=view.kwargs["pk"])
         return request.user.id == property.owner.id

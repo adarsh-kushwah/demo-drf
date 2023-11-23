@@ -45,7 +45,7 @@ class UserProfile(AbstractUser):
 
 class BaseAddress(models.Model):
     street_address = models.CharField(max_length=255)
-    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)
 
     class Meta:
         abstract = True
