@@ -4,7 +4,7 @@ from rest_framework import mixins, status as status_codes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.decorators import permission_classes
 
 from property.models import Property
@@ -14,6 +14,7 @@ from property.utility import fully_qualified_URL
 
 
 class PropertyView(APIView):
+
     def get(self, request, *args, **kwargs):
         """
         showing all properties to annonomous user
@@ -42,7 +43,20 @@ class PropertyView(APIView):
         return Response(data, status=status)
 
 
-class PropertyDetailUpdateDeleteView(RetrieveAPIView):
+class PropertyDetailView(GenericAPIView,
+                        mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.DestroyModelMixin ):
+
     permission_classes = [IsAuthenticated, OwnerPermission]
     serializer_class = PropertySerializer
     queryset = Property.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
