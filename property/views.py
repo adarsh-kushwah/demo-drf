@@ -42,7 +42,7 @@ class PropertyView(APIView):
         return Response(data, status=status)
 
 
-class PropertyDetailView(RetrieveAPIView):
+class PropertyDetailUpdateDeleteView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, OwnerPermission]
     serializer_class = PropertySerializer
     queryset = Property.objects.all()
