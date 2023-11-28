@@ -6,12 +6,12 @@ faker = Factory.create()
 
 class CreateUserFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = 'user.UserProfile'
+        model = "user.UserProfile"
 
     username = faker.user_name()
-    user_type = 'owner'
-    gender = 'male'
-    #phone_number = faker.phone_number()
+    user_type = "owner"
+    gender = "male"
+    # phone_number = faker.phone_number()
     phone_number = str(faker.random_number(10))
     password = faker.password()
 

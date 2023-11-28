@@ -18,7 +18,6 @@ from user.models import UserProfile, Location
 from user.permissions import ProfilePermission
 
 
-
 # class UserProfileView(CreateModelMixin, GenericAPIView):
 
 #     queryset = UserProfile.objects.all()
@@ -110,20 +109,19 @@ class ProfileView(viewsets.ViewSet):
 
 
 class Profile1(viewsets.ModelViewSet):
-
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
 
-    @action(detail=True, methods=['patch'], name='tt')
-    def password(self, request, pk=None):        
-        print('------------->>>change password')
-        return Response('test')
+    @action(detail=True, methods=["patch"], name="tt")
+    def password(self, request, pk=None):
+        print("------------->>>change password")
+        return Response("test")
 
     @password.mapping.delete
     def delete_password(self, request, pk=None):
-        print('delete password------------->>>delete')
-        return Response('delete')
+        print("delete password------------->>>delete")
+        return Response("delete")
 
-    def list(self,request):
-        t = reverse('user:profile1namespace-detail',args=[2], request=request)
+    def list(self, request):
+        t = reverse("user:profile1namespace-detail", args=[2], request=request)
         return Response(t)

@@ -31,7 +31,7 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     useraddress = AddressSerializer()
-    
+
     class Meta:
         model = UserProfile
         fields = [

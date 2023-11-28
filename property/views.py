@@ -18,7 +18,6 @@ from property.utility import fully_qualified_URL
 
 
 class PropertyView(APIView):
-
     @throttle_classes([UserRateThrottle])
     def get(self, request, *args, **kwargs):
         """
@@ -48,16 +47,17 @@ class PropertyView(APIView):
         return Response(data, status=status)
 
 
-class PropertyDetailView(GenericAPIView,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin ):
-
+class PropertyDetailView(
+    GenericAPIView,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+):
     permission_classes = [IsAuthenticated, OwnerPermission]
     serializer_class = PropertySerializer
     queryset = Property.objects.all()
 
-    #caching result for 30 seconds
+    # caching result for 30 seconds
     @method_decorator(cache_page(30))
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
