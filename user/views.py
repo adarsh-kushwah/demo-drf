@@ -50,8 +50,8 @@ from rest_framework.permissions import AllowAny
 class ProfileView(viewsets.ViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, OwnerPermission]
-
+    permission_classes = [IsAuthenticated]
+    
     def get_permissions(self):
         if self.action == "list":
             return [IsAdminUser()]
@@ -61,7 +61,7 @@ class ProfileView(viewsets.ViewSet):
 
     def list(self, request):
         serializer = self.serializer_class(self.queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
         """
@@ -82,13 +82,13 @@ class ProfileView(viewsets.ViewSet):
         if profile_serializer.is_valid():
             profile_serializer.save()
             data = {"status": "registration success"}
-            return Response(data)
-        return Response(profile_serializer.errors)
+            return Response(data, status.HTTP_201_CREATED)
+        return Response(profile_serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk=None):
         user = get_object_or_404(UserProfile, pk=pk)
         serializer = self.serializer_class(user)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def partial_update(self, request, pk=None, *args, **kwargs):
         instance = get_object_or_404(UserProfile, pk=pk)
@@ -98,10 +98,10 @@ class ProfileView(viewsets.ViewSet):
             serializer.save()
             data = {"message": "user updated successfully"}
             return Response(data, status=status.HTTP_200_OK)
-        return Response(serializer.errors)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None, *args, **kwargs):
         user = get_object_or_404(UserProfile, pk=pk)
         user.delete()
         data = {"status": "user deleted successfully"}
-        return Response(data)
+        return Response(data, status=status.HTTP_200_OK)

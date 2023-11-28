@@ -145,6 +145,14 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         # "rest_framework.authentication.TokenAuthentication",
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/minute',
+        'user': '10/minute'
+    }
 }
 
 SIMPLE_JWT = {
@@ -152,3 +160,9 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
 }
+
+import sys
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+
+if TESTING:
+  del REST_FRAMEWORK['DEFAULT_THROTTLE_RATES']
