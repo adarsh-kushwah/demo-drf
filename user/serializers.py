@@ -31,7 +31,7 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     useraddress = AddressSerializer()
-
+    
     class Meta:
         model = UserProfile
         fields = [
@@ -44,6 +44,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "user_type",
             "gender",
             "phone_number",
+            "profile_picture",
         ]
 
     def validate_phone_number(self, value):
@@ -73,7 +74,6 @@ class ProfileSerializer(serializers.ModelSerializer):
                 location = address_data["location"]["postal_code"]
                 user_address.location = location
             user_address.save()
-
         for key, value in validated_data.items():
             setattr(user_instance, key, value)
         user_instance.save()

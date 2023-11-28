@@ -17,7 +17,7 @@ class UserLogin(APITestCase):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.url = reverse('token_obtain_pair')
+        self.url = reverse('user:token_obtain_pair')
 
     def setUp(self) -> None:
         self.password = 'testing'

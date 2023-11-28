@@ -12,7 +12,7 @@ class CreateUserFactory(factory.django.DjangoModelFactory):
     user_type = 'owner'
     gender = 'male'
     #phone_number = faker.phone_number()
-    phone_number = faker.random_number(10)
+    phone_number = str(faker.random_number(10))
     password = faker.password()
 
     # while len(phone_number) != 10 or not phone_number.isdigit():

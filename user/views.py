@@ -2,10 +2,12 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework import viewsets, status
 from rest_framework.generics import GenericAPIView
-from rest_framework import status
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
+from rest_framework.decorators import action
+from rest_framework.reverse import reverse
 
 from property.models import Property
 from property.serializers import PropertySerializer
@@ -13,9 +15,9 @@ from property.permissions import OwnerPermission
 
 from user.serializers import ProfileSerializer
 from user.models import UserProfile, Location
+from user.permissions import ProfilePermission
 
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
-from rest_framework.permissions import AllowAny
+
 
 # class UserProfileView(CreateModelMixin, GenericAPIView):
 
@@ -50,8 +52,8 @@ from rest_framework.permissions import AllowAny
 class ProfileView(viewsets.ViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
-    
+    permission_classes = [IsAuthenticated, ProfilePermission]
+
     def get_permissions(self):
         if self.action == "list":
             return [IsAdminUser()]
@@ -96,7 +98,7 @@ class ProfileView(viewsets.ViewSet):
 
         if serializer.is_valid():
             serializer.save()
-            data = {"message": "user updated successfully"}
+            data = {"message": "user updated successfully", "user": serializer.data}
             return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
@@ -105,3 +107,23 @@ class ProfileView(viewsets.ViewSet):
         user.delete()
         data = {"status": "user deleted successfully"}
         return Response(data, status=status.HTTP_200_OK)
+
+
+class Profile1(viewsets.ModelViewSet):
+
+    queryset = UserProfile.objects.all()
+    serializer_class = ProfileSerializer
+
+    @action(detail=True, methods=['patch'], name='tt')
+    def password(self, request, pk=None):        
+        print('------------->>>change password')
+        return Response('test')
+
+    @password.mapping.delete
+    def delete_password(self, request, pk=None):
+        print('delete password------------->>>delete')
+        return Response('delete')
+
+    def list(self,request):
+        t = reverse('user:profile1namespace-detail',args=[2], request=request)
+        return Response(t)
