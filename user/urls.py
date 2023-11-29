@@ -7,11 +7,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework import routers
-
+# nishantkumarkadam@gmail.com
+# ruby@champ!@#$
 router = routers.SimpleRouter()
 router.register(r"profile", ProfileView)
 router.register(r"profile1", Profile1, basename="profile1namespace")
-app_name = "user"
+# app_name = "user"
 
 urlpatterns = [
     # path("signup/", UserProfileView.as_view(), name="user_profile"),

@@ -6,7 +6,7 @@ from rest_framework import mixins, status as status_codes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.throttling import UserRateThrottle
 from rest_framework.decorators import api_view, throttle_classes
@@ -15,9 +15,13 @@ from property.models import Property
 from property.serializers import PropertySerializer
 from property.permissions import OwnerPermission
 from property.utility import fully_qualified_URL
-
+from django_filters.rest_framework import DjangoFilterBackend
 
 class PropertyView(APIView):
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user_type']
+
     @throttle_classes([UserRateThrottle])
     def get(self, request, *args, **kwargs):
         """
@@ -67,3 +71,22 @@ class PropertyDetailView(
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+from django_filters.rest_framework import FilterSet
+from django_filters import CharFilter
+from django_filters.rest_framework import DjangoFilterBackend
+
+class PostFilter(FilterSet):
+    name = CharFilter(lookup_expr='icontains')
+    # description = CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Property
+        fields = ['name','description']
+
+class PropertyList(ListAPIView):
+    queryset = Property.objects.all()
+    serializer_class = PropertySerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PostFilter
+    filterset_fields = ['name','description']

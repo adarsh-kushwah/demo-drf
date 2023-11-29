@@ -42,6 +42,7 @@ class UserProfileTest(APITestCase):
             "user_type": self.user.user_type,
             "gender": self.user.gender,
             "phone_number": self.user.phone_number,
+            "profile_picture": self.user.profile_picture,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["username"], self.user.username)
