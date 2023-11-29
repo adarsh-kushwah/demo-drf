@@ -17,7 +17,7 @@ class UserProfileTest(APITestCase):
     def setUp(self) -> None:
         self.password = "testing"
         self.user = user_factory.CreateUserFactory(password=self.password)
-        self.profile_url = reverse("user:userprofile-detail", args=[self.user.id])
+        self.profile_url = reverse("userprofile-detail", args=[self.user.id])
         response = self.client.post(
             self.login_url, {"username": self.user.username, "password": self.password}
         )
