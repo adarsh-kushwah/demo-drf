@@ -9,6 +9,6 @@ from property.views import PropertyView, PropertyDetailView, PropertyList
 
 urlpatterns = [
     path("property/", PropertyView.as_view(), name="property-list"),
-    path("property/<int:pk>/", PropertyDetailView.as_view(), name="property-detail"),
+    path("property/<int:rent_amount1>/", PropertyDetailView.as_view(), name="property-detail"),
     path('property-list', PropertyList.as_view())
 ]

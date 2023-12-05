@@ -51,16 +51,17 @@ from user.permissions import ProfilePermission
 class ProfileView(viewsets.ViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, ProfilePermission]
+    # permission_classes = [IsAuthenticated, ProfilePermission]
 
-    def get_permissions(self):
-        if self.action == "list":
-            return [IsAdminUser()]
-        elif self.action == "create":
-            return [AllowAny()]
-        return super(ProfileView, self).get_permissions()
+    # def get_permissions(self):
+    #     if self.action == "list":
+    #         return [IsAdminUser()]
+    #     elif self.action == "create":
+    #         return [AllowAny()]
+    #     return super(ProfileView, self).get_permissions()
 
     def list(self, request):
+        breakpoint()
         serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -111,10 +112,11 @@ class ProfileView(viewsets.ViewSet):
 class Profile1(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
-
+    #sked
     @action(detail=True, methods=["patch"], name="tt")
     def password(self, request, pk=None):
         print("------------->>>change password")
+
         return Response("test")
 
     @password.mapping.delete

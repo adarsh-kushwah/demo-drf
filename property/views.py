@@ -57,13 +57,15 @@ class PropertyDetailView(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
 ):
-    permission_classes = [IsAuthenticated, OwnerPermission]
+    # permission_classes = [IsAuthenticated, OwnerPermission]
     serializer_class = PropertySerializer
     queryset = Property.objects.all()
-
+    lookup_field = 'rent_amount'
+    lookup_url_kwarg = 'rent_amount1'
     # caching result for 30 seconds
     @method_decorator(cache_page(30))
     def get(self, request, *args, **kwargs):
+        # breakpoint()
         return self.retrieve(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
